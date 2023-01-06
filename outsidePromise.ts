@@ -1,16 +1,16 @@
 /// <reference no-default-lib="true" />
 /// <reference lib="esnext" />
 
-export interface OutsidePromise {
-  promise: Promise<unknown>;
-  resolve: (value: unknown) => void;
+export interface OutsidePromise<Res> {
+  promise: Promise<Res>;
+  resolve: (value: Res) => void;
   // deno-lint-ignore no-explicit-any
   reject: (reason?: any) => void;
 }
 
-export function createNewPromise(): OutsidePromise {
+export function createNewPromise<Res>(): OutsidePromise<Res> {
   let resolve, reject;
-  const promise = new Promise((res, rej) => {
+  const promise = new Promise((res: (value: Res) => void, rej) => {
     [resolve, reject] = [res, rej];
   });
   return {
